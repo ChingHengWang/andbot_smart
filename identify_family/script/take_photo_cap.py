@@ -29,14 +29,17 @@ import ConfigParser
 import os
 
 configParser = ConfigParser.ConfigParser()   
-configFilePath = '/home/zach/catkin_ws/src/identify_family/env.config'
+#configFilePath = '/home/ubuntu/catkin_ws/src/andbot_smart/identify_family/env.config'
+home_dir = os.environ.get("HOME", "/home/zach")
+configFilePath = os.path.join(home_dir,'catkin_ws/src/andbot_smart/identify_family/env.config')
+
 configParser.read(configFilePath)
 
 class TakePhoto:
     def __init__(self):
         self.bridge = CvBridge()
         self.image_received = False
-
+	#rospy.loginfo(configFilePath)
         # Connect image topic
         img_topic = configParser.get('take_photo_cap','img_topic')
         self.image_sub = rospy.Subscriber(img_topic, Image, self.callback)

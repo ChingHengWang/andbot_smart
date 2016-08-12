@@ -9,11 +9,16 @@
 #include <map>
 #include <string>
 #include "../lib/inih/cpp/INIReader.h"
+#include <cstdlib>
 using namespace std;
-string ini_path = "/home/zach/catkin_ws/src/identify_family/srv.ini";
+//const char* home_dir = std::getenv("HOME"); 
+string home_dir(std::getenv("HOME"));
+string ini_path = home_dir+"/catkin_ws/src/andbot_smart/identify_family/srv.ini";
+//string ini_path = "/home/ubuntu/catkin_ws/src/andbot_smart/identify_family/srv.ini";
+
+
 INIReader reader(ini_path);
 const string INI_PKG_FOLDER = reader.Get("face_rec_srv","pkg_folder","UNKNOW");
-
 int message1= 0;
 int message2= 1;
 int message3= 2;
@@ -64,8 +69,14 @@ bool face_rec(identify_family::FaceRec::Request  &req,
   system(cmd);//block 
   memset(cmd, 0, sizeof cmd);
 
-  FILE* view_open = popen("rosrun image_view image_view image:=/image_raw","r");
+  FILE* view_open = popen("rosrun image_view image_view image:=/camera/rgb/image_raw","r");
+
+// OPEN CAMERA
+/*
   FILE* cam_open = popen("roslaunch identify_family usb_camera.launch 2>/dev/null","r");
+*/
+  FILE* cam_open = popen("roslaunch openni2_launch openni2.launch 2>/dev/null","r");
+
   sleep(5);
   system("rosrun identify_family take_photo_cap.py");//block 
 /*
@@ -74,8 +85,14 @@ bool face_rec(identify_family::FaceRec::Request  &req,
   memset(cmd, 0, sizeof cmd);
 */
   FILE* view_close = popen("pkill -f image_view 1>/dev/null","w");  
-  FILE* cam_close = popen("rosnode kill /uvc_camera_node 1>/dev/null","w");
-  pclose(cam_open);pclose(cam_close);pclose(view_open);pclose(view_close);
+
+//CLOSE CAMERA
+/*  FILE* cam_close = popen("rosnode kill /uvc_camera_node 1>/dev/null","w");
+*/
+    FILE* cam_close = popen("pkill -f openni2_launch 1>/dev/null","w");
+
+  pclose(cam_open);pclose(cam_close);
+  pclose(view_open);pclose(view_close);
 
   pthread_t thread1,thread2,thread3;
   pthread_create(&thread1, NULL , classify_funciton ,(void*)&message1);
