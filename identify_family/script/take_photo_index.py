@@ -29,7 +29,7 @@ import ConfigParser
 import os
 
 configParser = ConfigParser.ConfigParser()   
-configFilePath = '/home/zach/catkin_ws/src/identify_family/env.config'
+configFilePath = '/home/zach/catkin_ws/src/andbot_smart/identify_family/env.config'
 configParser.read(configFilePath)
 
 class TakePhoto:

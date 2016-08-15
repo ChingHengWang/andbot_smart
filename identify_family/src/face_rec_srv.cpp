@@ -10,7 +10,7 @@
 #include <string>
 #include "../lib/inih/cpp/INIReader.h"
 using namespace std;
-string ini_path = "/home/zach/catkin_ws/src/identify_family/srv.ini";
+string ini_path = "/home/zach/catkin_ws/src/andbot_smart/identify_family/srv.ini";
 INIReader reader(ini_path);
 const string INI_PKG_FOLDER = reader.Get("face_rec_srv","pkg_folder","UNKNOW");
 
