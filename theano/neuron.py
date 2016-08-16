@@ -10,12 +10,17 @@ import theano
 import theano.tensor as T
 import random
 import numpy
-
+example0='stop'
+example01='stop'
+SW_readfile_to_list='stop'
+SW_readfile_to_ndarray='stop'
 example1='stop'
 example2='stop'
 example3='stop'
 example4='stop'
-example5='run'
+example5='stop'
+
+example2='run'
 
 def batch(iterable, n = 1):
    current_batch = []
@@ -27,6 +32,34 @@ def batch(iterable, n = 1):
    if current_batch:
        yield current_batch
 
+
+# y=x^2
+if example0 == 'run':
+  x=theano.tensor.scalar()
+  y=theano.tensor.scalar()
+  z = x**2+y**2
+  f = theano.function(inputs=[x,y],outputs=z)
+  print f(-2,-3)
+
+# z=dot(x,w)
+if example01 == 'run':
+  x=T.vector()
+  w=T.vector()
+  z = T.dot(w,x)
+  f = theano.function(inputs=[x,w],outputs=z)
+  w=[-1,1]
+  x=[-1,1]
+  print f(w,x)
+
+if SW_readfile_to_list == 'run':
+  
+  with open('miku.save') as f:
+      content = f.readlines()
+  print content
+
+if SW_readfile_to_ndarray == 'run':
+  data = numpy.loadtxt('miku.save')
+  print type(data)
 
 # create neuron function
 # x,w,b as function input
