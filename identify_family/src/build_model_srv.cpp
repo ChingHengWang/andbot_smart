@@ -6,16 +6,17 @@
 bool build_model(identify_family::BuildModel::Request &req,
          identify_family::BuildModel::Response &res)
 {
-  FILE* cam_view = popen("rosrun image_view image_view image:=/image_raw","r");
-  FILE* cam_open = popen("roslaunch identify_family usb_camera.launch 2>/dev/null","r");
+  FILE* cam_view = popen("rosrun image_view image_view image:=/camera/rgb/image_raw","r");
+//  FILE* cam_open = popen("roslaunch identify_family usb_camera.launch 2>/dev/null","r");
   sleep(2);
   char cmd[300]; 
   sprintf(cmd,"rosrun identify_family take_photo_index.py _label:=%s _start:=%d _end:=%d",req.name.c_str(),(int)req.start,(int)req.end);
   system(cmd);
 
   system("pkill -f image_view");  
-  FILE* cam_close = popen("rosnode kill /uvc_camera_node 2>/dev/null","w");
-  pclose(cam_open);pclose(cam_close);pclose(cam_view);
+  //FILE* cam_close = popen("rosnode kill /uvc_camera_node 2>/dev/null","w");
+  //pclose(cam_open);pclose(cam_close);
+  pclose(cam_view);
   memset(cmd, 0, sizeof cmd);
 //  char cmd[100]; 
 

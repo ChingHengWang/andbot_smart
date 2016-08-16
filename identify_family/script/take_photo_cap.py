@@ -27,6 +27,7 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 import ConfigParser
 import os
+from time import sleep
 
 configParser = ConfigParser.ConfigParser()   
 configFilePath = '/home/zach/catkin_ws/src/andbot_smart/identify_family/env.config'
@@ -75,10 +76,18 @@ if __name__ == '__main__':
         # Take a photo
         img_title_dir = configParser.get('take_photo_cap','img_title_dir')
         img_title = os.path.join(img_title_dir,'image-'+str(i)+'.jpg')
-        if camera.take_picture(img_title):
-            rospy.loginfo("Saved image " + img_title)
-        else:
-            rospy.loginfo("No images received")
+
+#        if camera.take_picture(img_title):
+#            rospy.loginfo("Saved image " + img_title)
+#        else:
+#            rospy.loginfo("No images received")
+        while camera.take_picture(img_title)!=1:
+        	sleep(0.001)   
+		#rospy.loginfo("No images received")
+
+        rospy.loginfo("Saved image " + img_title)
+
+
         # Sleep to give the last log messages time to be sent
         take_photo_t = float(configParser.get('take_photo_cap','take_photo_t'))
  

@@ -18,11 +18,6 @@ const string INI_PKG_FOLDER = reader.Get("face_rec_srv","pkg_folder","UNKNOW");
 int message1= 0;
 int message2= 1;
 int message3= 2;
-int message4= 3;
-int message5= 4;
-int message6= 5;
-int message7= 6;
-
 
 
 vector<string> pv;
@@ -49,12 +44,11 @@ void *classify_funciton(void* index){
   double tmp_score=0.0;
   while( ss>>tmp_name && tmp_name.compare("Predict")) ;
   ss>>tmp_name; ss>>tmp; ss>>tmp_score;
-  if (!tmp_name.compare("==="))
-	tmp_name="guo fu chen";
+  if (!tmp_name.compare("===")) 
+	tmp_name="fu chen";
   pv.push_back(tmp_name); 
 //  cout <<"test "<<tmp<<endl;
   printf ("pthread %d anwser is %s score %f\n",idx,tmp_name.c_str(),tmp_score);
-
 }
 
 
@@ -73,7 +67,7 @@ bool face_rec(identify_family::FaceRec::Request  &req,
 
   FILE* view_open = popen("rosrun image_view image_view image:=/camera/rgb/image_raw","r");
 
-  sleep(6);
+  sleep(1);
   system("rosrun identify_family take_photo_cap.py");//block 
 /*
   sprintf(cmd,"`rospack find identify_family`/openface_tool/util/align-dlib.py `rospack find identify_family`/photo/test align outerEyesAndNose `rospack find identify_family`/photo/test_aligned --size 96");
@@ -88,20 +82,10 @@ bool face_rec(identify_family::FaceRec::Request  &req,
   pthread_create(&thread1, NULL , classify_funciton ,(void*)&message1);
   pthread_create(&thread2, NULL , classify_funciton ,(void*)&message2);
   pthread_create(&thread3, NULL , classify_funciton ,(void*)&message3);
-  pthread_create(&thread4, NULL , classify_funciton ,(void*)&message4);
-  pthread_create(&thread5, NULL , classify_funciton ,(void*)&message5);
-  pthread_create(&thread6, NULL , classify_funciton ,(void*)&message6);
-  pthread_create(&thread7, NULL , classify_funciton ,(void*)&message7);
-
 
   pthread_join( thread1, NULL);
   pthread_join( thread2, NULL);
   pthread_join( thread3, NULL);
-  pthread_join( thread4, NULL);
-  pthread_join( thread5, NULL);
-  pthread_join( thread6, NULL);
-  pthread_join( thread7, NULL);
-
 
 //  pv.erase(find(pv.begin(),pv.end(),"guo fu chen"));
   cout << "start pv" <<endl;
@@ -117,13 +101,14 @@ bool face_rec(identify_family::FaceRec::Request  &req,
 		pm[pv[i]]+=1;
   }  	  
   map<string,int>::iterator it = pm.begin();
-  map<string,int>::iterator it_back = pm.begin();
+  map<string,int>::iterator it_back = pm.end();
 
   for (map<string,int>::iterator it2 = pm.begin(); it2 != pm.end(); ++it2)
   {
-    if (it2->second > it->second){
-		it=it2;
-	}
+    if (it2->second > it->second)
+	{	it_back=it; it=it2;  }
+	else if (it2->second >it_back->second)
+			it_back=it2;
   }
   string anwser=it->first;
   printf("final anwser is %s\n",anwser.c_str());
