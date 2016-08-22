@@ -19,8 +19,8 @@ model.compile(optimizer='rmsprop',
 
 # train the model, iterating on the data in batches
 # of 32 samples
-model.fit(x, y, nb_epoch=30, batch_size=10)
+model.fit(x, y, nb_epoch=60, batch_size=10)
 predict= model.predict(x, batch_size=10)
 ans = numpy.concatenate((x,predict),axis=1)
-numpy.savetxt('miku_2_1000_1000_1_relu_epoch_30_batch_size_10.txt', ans)
+numpy.savetxt('miku_2_1000_1000_1_relu_epoch_60_batch_size_10.txt', ans)
 
