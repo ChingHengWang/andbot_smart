@@ -20,7 +20,7 @@ example3='stop'
 example4='stop'
 example5='stop'
 
-example2='run'
+example4='run'
 
 def batch(iterable, n = 1):
    current_batch = []
@@ -162,7 +162,8 @@ if example4 == 'run':
 			inputs = [x,y_hat],
 			updates = [(w,w-0.1*dw) , (b,b-0.1*db)]
 			)
-	x = [1,-1]
+#	x = [1,-1]
+	x=numpy.array([1,-1])
 	y_hat = 1
 
 	for i in range(100):
