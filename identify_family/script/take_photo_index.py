@@ -81,10 +81,12 @@ if __name__ == '__main__':
         except:
             os.mkdir(img_label_dir)
         img_title = os.path.join(img_label_dir,'image-'+str(i)+'.jpg')
-        if camera.take_picture(img_title):
-            rospy.loginfo("Saved image " + img_title)
-        else:
-            rospy.loginfo("No images received")
+        while camera.take_picture(img_title)!=1:
+        	sleep(0.001)   
+		#rospy.loginfo("No images received")
+
+        rospy.loginfo("Saved image " + img_title)
+
         # Sleep to give the last log messages time to be sent
         take_photo_t = float(configParser.get('take_photo_index','take_photo_t'))
  

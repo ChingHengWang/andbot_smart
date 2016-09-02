@@ -12,8 +12,8 @@ model = Sequential()
 model.add(Dense(output_dim=1000, input_dim=2, activation='relu'))
 model.add(Dense(output_dim=1, input_dim=1000, activation='relu'))
 
-
-model.compile(optimizer='rmsprop',
+sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+model.compile(optimizer='sgd',
               loss='binary_crossentropy',
               metrics=['accuracy'])
 
@@ -22,5 +22,5 @@ model.compile(optimizer='rmsprop',
 model.fit(x, y, nb_epoch=60, batch_size=10)
 predict= model.predict(x, batch_size=10)
 ans = numpy.concatenate((x,predict),axis=1)
-numpy.savetxt('miku_2_1000_1000_1_relu_epoch_60_batch_size_10.txt', ans)
+numpy.savetxt('miku_2_1000_1000_1_relu_epoch_60_batch_size_10_optimizer_sgd_lr_0.01_decade_1e-6_momentum_0.9.txt', ans)
 

@@ -1,0 +1,19 @@
+rosrun andbot_teleop andbot_teleop_key
+
+#odroid
+roscore 
+roslaunch andbot base_only.launch #metal1_develop
+
+#local 
+# 
+export ROS_IP=192.168.25.81
+export ROS_MASTER_URI=http://metal1:11311
+export ROSLAUNCH_SSH_UNKNOWN=1
+
+rosrun identify_family face_rec_srv
+
+rosrun identify_family face_rec_client_android
+
+#dont use
+#roslaunch identify_family remote_camera.launch
+
