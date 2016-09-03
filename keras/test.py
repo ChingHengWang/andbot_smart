@@ -13,12 +13,12 @@ model.add(Dense(output_dim=1000, input_dim=2, activation='relu'))
 model.add(Dense(output_dim=1, input_dim=1000, activation='relu'))
 
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+# Configure it's learning process
 model.compile(optimizer='sgd',
               loss='binary_crossentropy',
               metrics=['accuracy'])
 
 # train the model, iterating on the data in batches
-# of 32 samples
 model.fit(x, y, nb_epoch=60, batch_size=10)
 predict= model.predict(x, batch_size=10)
 ans = numpy.concatenate((x,predict),axis=1)
